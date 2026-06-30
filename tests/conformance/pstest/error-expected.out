@@ -1,0 +1,10 @@
+
+Handling Errors
+.F.
+--------------------------------------------------
+3 tests, 1 failed
+
+When a test checks for an error, the test
+  should fail if the error is not thrown
+    expected: error
+    actual:   no error

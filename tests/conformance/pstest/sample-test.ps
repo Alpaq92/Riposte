@@ -1,0 +1,197 @@
+(pstest.ps) runlibfile
+
+(Sample Tests) test-case
+
+(assert-equal) should
+
+  (be equal)
+  1 1 assert-equal
+
+  (be equal but fail)
+  1 2 assert-equal
+
+(assert-not-equal) should
+
+  (not be equal)
+  1 2 assert-not-equal
+
+  (not be equal but fail)
+  1 1 assert-not-equal
+
+(assert-false) should
+
+  (be false)
+  false assert-false
+
+  (be false but fail)
+  true assert-false
+
+(assert-true) should
+
+  (be true)
+  true assert-true
+
+  (be true but fail)
+  false assert-true
+
+  (not output the item twice (#4))
+  false assert-true
+
+(assert-empty) should
+
+  (be empty)
+  [] assert-empty
+
+  (be empty but fail)
+  [0] assert-empty
+
+(assert-not-empty) should
+
+  (not be empty)
+  [0] assert-not-empty
+
+  (not be empty but fail)
+  [] assert-not-empty
+
+(assert-string-contains) should
+
+  (contain at beginning)
+  (123) (12) assert-string-contains
+
+  (contain itself)
+  (123) (123) assert-string-contains
+
+  (contain at end)
+  (123) (23) assert-string-contains
+
+  (fail to contain)
+  (123) (4) assert-string-contains
+
+(assert-not-string-contains) should
+
+  (not contain)
+  (123) (4) assert-not-string-contains
+
+  (fail to not contain)
+  (123) (2) assert-not-string-contains
+
+(assert-contains) should
+
+  (contain at beginning)
+  [1 2 3] 1 assert-contains
+
+  (contain in middle)
+  [1 2 3] 2 assert-contains
+
+  (contain at end)
+  [1 2 3] 3 assert-contains
+
+  (contain in mix)
+  [2 (2) /2] (2) assert-contains
+
+  (fail to contain)
+  [1 2 3] 4 assert-contains
+
+  (fail to contain string in mix)
+  [2 /2] (2) assert-contains
+
+  (fail to contain name in mix)
+  [2 (2)] /2 assert-contains
+
+(assert-not-contains) should
+
+  (not contain)
+  [1 2 3] 4 assert-not-contains
+
+  (fail to not contain)
+  [1 2 3] 2 assert-not-contains
+
+(assert-deep-equal) should
+
+  (pass for primitives)
+  1 1 assert-deep-equal
+
+  (pass for simple arrays)
+  [1 2 3] [1 2 3] assert-deep-equal
+
+  (pass for nested arrays)
+  [[1]] [[1]] assert-deep-equal
+
+  (pass for arrays with varying depth of nesting)
+  [1 [2] [3 4 [5]]]  [1 [2] [3 4 [5]]]  assert-deep-equal
+
+  (fail for simple arrays with differing content)
+  [1 2 3] [1 2 4] assert-deep-equal
+
+  (fail for deeply nested arrays)
+  [1 [[2] 3] [4 []] [5]]  [1 [[2] 3] [4 [0]] [5]]  assert-deep-equal
+
+  (fail for type mismatch)
+  [/1] [(1)] assert-deep-equal
+
+(assert-deep-not-equal) should
+
+  (pass for simple arrays with different content)
+  [1 2 3] [1 2 4] assert-deep-not-equal
+
+  (fail for simple arrays with same content)
+  [1 2 3] [1 2 3] assert-deep-not-equal
+
+
+(assert-almost-equal) should
+
+  (pass for equal numbers)
+  1 1 1e-5 assert-almost-equal
+
+  (pass for difference below epsilon)
+  1 1e-5 add 1 1e-4 assert-almost-equal
+
+  (fail for difference greater than epsilon)
+  1 1e-4 add 1 1e-5 assert-almost-equal
+
+  (throw error for non-numbers)
+  { (not a number) /1 /1 2 assert-almost-equal } { pop pop } assert-error
+
+(assert-not-almost-equal) should
+
+  (fail for difference smaller than epsilon)
+  1 1e-5 add 1 1e-4 assert-not-almost-equal
+
+  (pass for difference greater epsilon)
+  1 1e-4 add 1 1e-5 assert-not-almost-equal
+
+  (throw error for non-numbers)
+  { (not a number) /1 /1 2 assert-not-almost-equal } { pop pop } assert-error
+
+
+(assert-deep-almost-equal) should
+
+  (pass for primitives)
+  1.00 1.01 0.1 assert-deep-almost-equal
+
+  (pass for simple arrays)
+  [1 2 3.00] [1 2 3.01] 0.02 assert-deep-almost-equal
+
+  (fail for primitives)
+  1.00 1.01 0.005 assert-deep-almost-equal
+
+  (fail for simple arrays)
+  [1 2 3.00] [1 2 3.01] 0.002 assert-deep-almost-equal
+
+
+(assert-deep-not-almost-equal) should
+
+  (fail for primitives)
+  1.00 1.01 0.1 assert-deep-not-almost-equal
+
+  (fail for simple arrays)
+  [1 2 3.00] [1 2 3.01] 0.02 assert-deep-not-almost-equal
+
+  (pass for primitives)
+  1.00 1.01 0.005 assert-deep-not-almost-equal
+
+  (pass for simple arrays)
+  [1 2 3.00] [1 2 3.01] 0.002 assert-deep-not-almost-equal
+
+
+test-summary

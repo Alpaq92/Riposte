@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="612" height="792" viewBox="0 0 612 792">
+<path d="M72 144L180 144L180 72L72 72Z" fill="#3373e6"/>
+<path d="M240 144L300 72L360 144" fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="12 6"/>
+<path d="M72 232C120 152 240 312 300 232" fill="none" stroke="#cc1a1a" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M456 108C456 88.118 439.882 72 420 72C400.118 72 384 88.118 384 108C384 127.882 400.118 144 420 144C439.882 144 456 127.882 456 108" fill="#ff0000"/>
+<path d="M240 302L204.73 410.54L297.06 343.46L182.94 343.46L275.27 410.54Z" fill="#f2bf1a" fill-rule="evenodd"/>
+<path d="M440 302L404.73 410.54L497.06 343.46L382.94 343.46L475.27 410.54Z" fill="#4da64d"/>
+<path d="M150 542L230 542" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L227.274 521.294" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L219.282 502" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L206.569 485.431" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L190 472.718" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L170.706 464.726" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L150 462" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L129.294 464.726" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L110 472.718" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L93.431 485.431" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L80.718 502" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L72.726 521.294" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L70 542" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<text x="72" y="92" font-size="24" font-family="sans-serif" fill="#000000">Riposte PostScript smoke test</text>
+<text x="72" y="212" font-size="24.495" font-family="sans-serif" fill="#1a3399">transformed text</text>
+<path d="M100 692L100 672L120 672L120 692Z" fill="#333333"/>
+<path d="M130 692L130 672L150 672L150 692Z" fill="#333333"/>
+<path d="M160 692L160 672L180 672L180 692Z" fill="#333333"/>
+<path d="M190 692L190 672L210 672L210 692Z" fill="#333333"/>
+<path d="M220 692L220 672L240 672L240 692Z" fill="#333333"/>
+<path d="M250 692L250 672L270 672L270 692Z" fill="#333333"/>
+<path d="M280 692L280 672L300 672L300 692Z" fill="#333333"/>
+<path d="M310 692L310 672L330 672L330 692Z" fill="#333333"/>
+<path d="M340 692L340 672L360 672L360 692Z" fill="#333333"/>
+<path d="M370 692L370 672L390 672L390 692Z" fill="#333333"/>
+<path d="M400 692L400 672L420 672L420 692Z" fill="#333333"/>
+<path d="M430 692L430 672L450 672L450 692Z" fill="#333333"/>
+<path d="M460 692L460 672L480 672L480 692Z" fill="#333333"/>
+</svg>

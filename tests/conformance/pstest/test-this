@@ -1,0 +1,28 @@
+#!/bin/bash
+
+declare -a failed alltests
+alltests=( *-test.ps )
+failed=()
+for testcase in ${alltests[@]} ; do
+    name="${testcase%-test.ps}"
+    ./pstest -q ${testcase} &> ${name}-actual.out
+
+    if diff ${name}-expected.out ${name}-actual.out \
+       &> ${name}.diff ; then
+	echo -n .
+    else
+	failed=( ${failed[@]} $testcase )
+	echo -n F
+    fi
+done
+
+echo
+echo '--------------------------------------------------'
+echo "${#alltests[@]} tests, ${#failed[@]} failed"
+
+for testcase in ${failed[@]} ; do
+    name="${testcase%-test.ps}"
+    echo
+    echo $testcase
+    cat ${name}.diff
+done

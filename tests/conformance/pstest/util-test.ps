@@ -1,0 +1,44 @@
+(pstest.ps) runlibfile
+(util.ps) run
+
+(Utils) test-case
+
+(inc) should
+  (increment the value stored for a name)
+    /i 1 def
+    /i inc
+    i 2 assert-equal
+
+(render-signed) should
+  (render a positive number with a plus)
+    1 render-signed ( + 1) assert-equal
+  (render a negative number with a minus)
+    -1 render-signed ( - 1) assert-equal
+
+(array-contains) should
+  (return true if value exists in array)
+    [1 2 3] 3 array-contains assert-true
+
+  (return false if value does not exist in array)
+    [1 2 3] 4 array-contains assert-false
+
+  (return false if similar value has wrong type - str/number)
+    [1 2 (3)] 3 array-contains assert-false
+
+  (return false if similar value has wrong type - str/name)
+    [1 2 (3)] /3 array-contains assert-false
+
+
+(zip) should
+  (merge two arrays pairwise)
+    /zipped [1 2 3] [4 5] zip def
+    zipped  [[1 4] [2 5]] assert-deep-equal
+
+(deep-eq) should
+  (be false for two arrays with ne elements)
+    [1] [2] deep-eq assert-false
+
+  (be true for two arrays with eq elements)
+    [1] [1] deep-eq assert-true
+
+test-summary

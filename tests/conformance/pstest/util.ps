@@ -1,0 +1,105 @@
+/inc {                          % <name> inc -
+    dup load 1 add def
+} bind def
+
+% https://en.wikibooks.org/wiki/PostScript_FAQ#How_to_concatenate_strings.3F
+/concat-strings {               % <str> <str> concat-strings <str>
+    exch dup length
+    2 index length add string
+    dup dup 4 2 roll copy length
+    4 -1 roll putinterval
+} bind def
+
+/render-signed {                   % <num> render-signed <str>
+    dup 0 ge {( + )} {( - )} ifelse
+    exch abs =string cvs concat-strings
+} bind def
+
+/array-contains {               % <array> <obj> array-contains <bool>
+    3 dict begin
+    /needle exch def
+    /hay exch def
+    /needletype needle type cvlit def
+
+    false hay {
+        dup type cvlit needletype eq
+        exch needle eq and
+        or
+    } forall
+
+    end
+} bind def
+
+/zip {                          % <array> <array> zip <array>
+    3 dict begin
+    /b exch def
+    /a exch def
+    /len a length b length min def
+
+    [
+        0 1 len 1 sub {
+            /pos exch def
+            [a pos get b pos get]
+        } for
+    ]
+    end
+} def
+
+/deep-eq {                      % <array> <array> deep-eq <bool>
+    1 dict begin
+    /.op {eq} def .deep-op
+    end
+} def
+
+/deep-almost-eq {               % <array> <array> <num> deep-almost-eq <bool>
+    /.eps exch def
+    /.op {sub abs .eps le} bind def
+    .deep-op
+} def
+
+/.deep-op {                     % <array> <array> .deep-op <bool>
+    2 dict begin
+    /b exch def
+    /a exch def
+
+    {
+        a type b type ne {      % type mismatch: return false
+            false
+            exit
+        } if
+
+        a type /arraytype ne    % primitive object: compare directly
+        a type /dicttype ne and {
+            a b .op
+            exit
+        } if
+
+        a length b length ne {  % size mismatch: return false
+            false
+            exit
+        } if
+
+        a type /dicttype eq {   % for dicts: compare key-value pairs
+            true a {
+                /value exch def
+                /key exch def
+
+                b key known {
+                    b key get value .deep-op
+                } {
+                    false
+                } ifelse
+                and
+            } forall
+            exit
+        } if
+
+        true a b zip {     % for arrays and strings: compare pair-wise
+            aload pop .deep-op and
+        } forall
+
+        exit % loop+exit makes multi-way conditionals more concise, see
+        % http://ghostscript.com/doc/current/Ps-style.htm#Standard_constructions
+    } loop
+    end
+} def

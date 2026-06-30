@@ -1,0 +1,127 @@
+%!PS-Adobe-3.0
+%%Title: Riposte imaging-model smoke test
+%%Creator: Riposte project
+%%CreationDate: 2026-06-29
+%%LanguageLevel: 2
+%%DocumentFonts: Helvetica Times-Roman
+%%BoundingBox: 0 0 612 792
+%%Pages: 2
+%%EndComments
+%
+% The MIT License (MIT)
+% Copyright (c) 2026 The Riposte authors
+%
+% Permission is hereby granted, free of charge, to any person obtaining a copy
+% of this file and associated documentation files (the "File"), to deal in the
+% File without restriction, including without limitation the rights to use,
+% copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+% the File, and to permit persons to whom the File is furnished to do so,
+% subject to the following conditions:
+%
+% The above copyright notice and this permission notice shall be included in
+% all copies or substantial portions of the File.
+%
+% THE FILE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+% OUT OF OR IN CONNECTION WITH THE FILE OR THE USE OR OTHER DEALINGS IN THE FILE.
+%
+% Purpose: a deterministic, license-clean fixture that exercises the core
+% PostScript imaging model so Riposte can golden-image test its renderer:
+%   paths (moveto/lineto/curveto/closepath/arc), nonzero fill vs even-odd
+%   eofill, stroking (setlinewidth/cap/join/dash), color spaces
+%   (setgray/setrgbcolor/setcmykcolor), CTM ops (translate/scale/rotate) with
+%   gsave/grestore, control flow (def, for), and text (findfont/scalefont/show).
+
+%%Page: 1 1
+% --- filled rectangle (RGB) ---
+gsave
+  0.20 0.45 0.90 setrgbcolor
+  72 648 moveto 180 648 lineto 180 720 lineto 72 720 lineto closepath fill
+grestore
+
+% --- stroked open path: round caps/joins + dash ---
+gsave
+  4 setlinewidth 1 setlinecap 1 setlinejoin
+  [12 6] 0 setdash 0 setgray
+  240 648 moveto 300 720 lineto 360 648 lineto stroke
+grestore
+
+% --- cubic bezier curve ---
+gsave
+  2 setlinewidth [] 0 setdash 0.80 0.10 0.10 setrgbcolor
+  72 560 moveto 120 640 240 480 300 560 curveto stroke
+grestore
+
+% --- full circle via arc, filled from CMYK ---
+gsave
+  0 1 1 0 setcmykcolor
+  newpath 420 684 36 0 360 arc fill
+grestore
+
+% --- pentagram filled EVEN-ODD (leaves a hollow centre) ---
+gsave
+  240 430 translate
+  0.95 0.75 0.10 setrgbcolor
+  newpath
+    0.00 60.00 moveto
+    -35.27 -48.54 lineto
+    57.06 18.54 lineto
+    -57.06 18.54 lineto
+    35.27 -48.54 lineto
+  closepath eofill
+grestore
+
+% --- same pentagram filled NONZERO (solid) for comparison ---
+gsave
+  440 430 translate
+  0.30 0.65 0.30 setrgbcolor
+  newpath
+    0.00 60.00 moveto
+    -35.27 -48.54 lineto
+    57.06 18.54 lineto
+    -57.06 18.54 lineto
+    35.27 -48.54 lineto
+  closepath fill
+grestore
+
+% --- fan of strokes via rotate inside a for-loop ---
+gsave
+  150 250 translate
+  0.5 setlinewidth 0 setgray
+  0 15 180 {
+    gsave rotate 0 0 moveto 80 0 lineto stroke grestore
+  } for
+grestore
+showpage
+
+%%Page: 2 2
+% --- plain text ---
+gsave
+  /Helvetica findfont 24 scalefont setfont
+  0 setgray
+  72 700 moveto (Riposte PostScript smoke test) show
+grestore
+
+% --- transformed text: translate + rotate + non-uniform scale ---
+gsave
+  72 580 translate 30 rotate 1.5 1 scale
+  /Times-Roman findfont 20 scalefont setfont
+  0.10 0.20 0.60 setrgbcolor
+  0 0 moveto (transformed text) show
+grestore
+
+% --- user-defined procedure driven by a for-loop ---
+/box {            % x y  ->  fills a 20x20 box with lower-left at x y
+  newpath moveto 0 20 rlineto 20 0 rlineto 0 -20 rlineto closepath fill
+} def
+gsave
+  0.20 0.20 0.20 setgray
+  100 30 460 { 100 box } for
+grestore
+showpage
+
+%%Trailer
+%%EOF

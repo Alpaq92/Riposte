@@ -1,0 +1,295 @@
+(util.ps) runlibfile
+
+/test-case {                    % <str> test-case mark
+    (\n) print print (\n) print
+    verbose {(\n) print} if
+
+    % (*) create a package dict to count the tests
+    3 dict begin
+    /.test-total-count 0 def
+    /.test-failed-count 0 def
+    /.test-current-object null def
+
+    % (**) mark the beginning of test results on the stack
+    mark
+} def
+
+/should {                       % <str> should -
+    verbose {
+        dup print (\n) print
+    } if
+    /.test-current-object exch def
+} def
+
+/test-summary {	                % mark <any*> test-summary -
+    verbose not {(\n) print} if
+    (--------------------------------------------------\n) print
+    .test-total-count 5 string cvs print ( tests, ) print
+    .test-failed-count 5 string cvs print ( failed\n) print
+
+    % (*) now we printed them, we don't need the counts any longer
+    end
+
+    % (**) release accumulated messages to stdout
+    ] {
+	dup type /stringtype eq {
+	    print
+	} {
+	    ==only
+	} ifelse
+    } forall
+} def
+
+/.test-passed {                 % - .test-passed -
+    /.test-total-count inc
+    verbose {
+        (  should ) print print ( PASS\n) print
+    } {
+        pop
+        (.) print
+    } ifelse
+} def
+
+/.test-failed {                 % <str> <any> <any> .test-failed <any*>
+    /.expected exch def
+    /.actual exch def
+    /.spec exch def
+
+    /.test-total-count inc
+    /.test-failed-count inc
+    .test-current-object null eq not {
+        (\n) .test-current-object (\n)
+        /.test-current-object null def
+    } if
+
+    verbose {
+        (  should ) print .spec print ( FAIL\n) print
+    } {
+        (F) print
+    } ifelse
+
+    (  should ) .spec (\n)
+    (    expected: ) .expected (\n)
+    (    actual:   ) .actual (\n)
+} def
+
+/assert-equal {                 % <str> <any> <any> assert-equal -
+    /expected exch def
+    /actual exch def
+    /spec exch def
+
+    expected actual eq {
+        spec .test-passed
+    } {
+        spec actual expected .test-failed
+    } ifelse
+} bind def
+
+/assert-not-equal {             % <str> <any> <any> assert-not-equal -
+    /expected exch def
+    /actual exch def
+    /spec exch def
+
+    expected actual eq not {
+        spec .test-passed
+    } {
+        spec actual expected .test-failed
+    } ifelse
+} bind def
+
+/assert-true {             % <str> <any> <any> assert-true -
+    /expected true def
+    /actual exch def
+    /spec exch def
+
+    actual {
+        spec .test-passed
+    } {
+        spec actual expected .test-failed
+    } ifelse
+} bind def
+
+/assert-false {             % <str> <any> <any> assert-true -
+    /expected false def
+    /actual exch def
+    /spec exch def
+
+    actual not {
+        spec .test-passed
+    } {
+        spec actual expected .test-failed
+    } ifelse
+} bind def
+
+/assert-empty {                 % <str> <array> assert-empty <any>*
+    /expected (empty) def
+    /actual exch def
+    /spec exch def
+
+    actual length 0 eq {
+	spec .test-passed
+    } {
+	spec actual expected .test-failed
+    } ifelse
+} bind def
+
+/assert-not-empty {            % <str> <array> assert-not-empty <any>*
+    /expected (not empty) def
+    /actual exch def
+    /spec exch def
+
+    actual length 0 ne {
+	spec .test-passed
+    } {
+	spec actual expected .test-failed
+    } ifelse
+} bind def
+
+/assert-string-contains { % <str> <str> <str> assert-string-contains <any>*
+    /needle exch def
+    /hay exch def
+    /spec exch def
+
+    hay needle search {
+        pop pop pop spec .test-passed
+    } {
+        pop spec hay {(containing ') needle (')} .test-failed
+    } ifelse
+} bind def
+
+/assert-not-string-contains { % <str> <str> <str> assert-not-string-contains <any>*
+    /needle exch def
+    /hay exch def
+    /spec exch def
+
+    hay needle search not {
+        pop spec .test-passed
+    } {
+        pop pop pop spec hay {(not containing ') needle (')} .test-failed
+    } ifelse
+} bind def
+
+/assert-contains {        % <str> <array> <any> assert-contains <any>*
+    /needle exch def
+    /hay exch def
+    /spec exch def
+
+    hay needle array-contains {
+        spec .test-passed
+    } {
+        spec hay {(containing ') needle (')} .test-failed
+    } ifelse
+} bind def
+
+/assert-not-contains {        % <str> <array> <any> assert-not-contains <any>*
+    /needle exch def
+    /hay exch def
+    /spec exch def
+
+    hay needle array-contains not {
+        spec .test-passed
+    } {
+        spec hay {(not containing ') needle (')} .test-failed
+    } ifelse
+} bind def
+
+/assert-deep-equal {  % <str> <array> <array> assert-deep-equal <any>*
+    /expected exch def
+    /actual exch def
+    /spec exch def
+
+    expected actual deep-eq {
+        spec .test-passed
+    } {
+        spec actual expected .test-failed
+    } ifelse
+} bind def
+
+/assert-deep-not-equal {  % <str> <array> <array> assert-deep-not-equal <any>*
+    /expected exch def
+    /actual exch def
+    /spec exch def
+
+    expected actual deep-eq not {
+        spec .test-passed
+    } {
+        spec actual expected .test-failed
+    } ifelse
+} bind def
+
+/assert-error {                 % <str> <proc> <proc> assert-error <any>*
+    /clean exch def
+    /proc exch def
+    /spec exch def
+
+    /proc load stopped {
+        clean
+        spec .test-passed
+    } {
+        spec (no error) (error) .test-failed
+    } ifelse
+} bind def
+
+/assert-almost-equal {          % <str> <num> <num> <num> assert-almost-equal <any>*
+    /epsilon exch def
+    /expected exch def
+    /actual exch def
+    /spec exch def
+
+    expected actual sub abs epsilon le {
+        spec .test-passed
+    } {
+        spec
+        {
+            expected
+            actual expected sub render-signed
+        }
+        {expected ( +/- ) epsilon}
+        .test-failed
+    } ifelse
+} bind def
+
+/assert-not-almost-equal {          % <str> <num> <num> <num> assert-not-almost-equal <any>*
+    /epsilon exch def
+    /expected exch def
+    /actual exch def
+    /spec exch def
+
+    expected actual sub abs epsilon ge {
+        spec .test-passed
+    } {
+        spec
+        {
+            expected
+            actual expected sub render-signed
+        }
+        {(not ) expected ( +/- ) epsilon}
+        .test-failed
+    } ifelse
+} bind def
+
+/assert-deep-almost-equal {  % <str> <array> <array> <num> assert-deep-almost-equal <any>*
+    /epsilon exch def
+    /expected exch def
+    /actual exch def
+    /spec exch def
+
+    expected actual epsilon deep-almost-eq {
+        spec .test-passed
+    } {
+        spec actual {expected ( +/- ) epsilon} .test-failed
+    } ifelse
+} bind def
+
+/assert-deep-not-almost-equal {  % <str> <array> <array> <num> assert-deep-not-almost-equal <any>*
+    /epsilon exch def
+    /expected exch def
+    /actual exch def
+    /spec exch def
+
+    expected actual epsilon deep-almost-eq not {
+        spec .test-passed
+    } {
+        spec actual {(not ) expected ( +/- ) epsilon} .test-failed
+    } ifelse
+} bind def

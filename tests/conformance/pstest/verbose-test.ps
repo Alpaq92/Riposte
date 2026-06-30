@@ -1,0 +1,14 @@
+(pstest.ps) runlibfile
+/verbose true def
+
+(Verbose Output) test-case
+
+(assert-equal) should
+
+  (be equal)
+  1 1 assert-equal
+
+  (be equal but fail)
+  1 2 assert-equal
+
+test-summary

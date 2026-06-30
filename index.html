@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Riposte — pure-JavaScript PostScript reader</title>
+  <meta name="description" content="Run and render PostScript in pure JavaScript, entirely in your browser. No plugins, no native modules, no WebAssembly, no dependencies." />
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="stylesheet" href="demo/style.css" />
+</head>
+<body>
+  <div class="root">
+    <!-- main toolbar -->
+    <header class="toolbar">
+      <div class="tb-group">
+        <button id="open" class="btn" type="button" title="Open a .ps / .eps file" aria-label="Open file"></button>
+        <input type="file" id="file" accept=".ps,.eps,.epsf,.txt" hidden />
+        <button id="font" class="btn" type="button" title="Load a Type 1 font (.pfb / .pfa)" aria-label="Load font"></button>
+        <input type="file" id="fontfile" accept=".pfb,.pfa,.t1,.ttf,.otf,.ttc" hidden />
+        <span class="divider"></span>
+        <button id="run" class="btn btn--accent btn--label" type="button" title="Run (Ctrl+Enter)"><span class="btn-ico"></span><span>Run</span></button>
+        <span class="divider"></span>
+        <button id="toggleThumbs" class="btn" type="button" title="Toggle thumbnails" aria-label="Toggle thumbnails" aria-pressed="true"></button>
+      </div>
+
+      <div class="tb-group tb-group--center">
+        <button id="prevPage" class="btn" type="button" title="Previous page" aria-label="Previous page"></button>
+        <input id="pageInput" class="num-input" type="text" inputmode="numeric" value="1" aria-label="Page number" />
+        <span id="pageTotal" class="tb-text">/ 1</span>
+        <button id="nextPage" class="btn" type="button" title="Next page" aria-label="Next page"></button>
+        <span class="divider"></span>
+        <button id="zoomOut" class="btn" type="button" title="Zoom out" aria-label="Zoom out"></button>
+        <span id="zoomLabel" class="tb-text">100%</span>
+        <button id="zoomIn" class="btn" type="button" title="Zoom in" aria-label="Zoom in"></button>
+        <button id="zoomFit" class="btn" type="button" title="Fit page" aria-label="Fit page"></button>
+      </div>
+
+      <div class="tb-spacer"></div>
+
+      <div class="tb-group">
+        <button id="findBtn" class="btn" type="button" title="Find in source" aria-label="Find in source"></button>
+        <button id="svg" class="btn" type="button" title="Download current page as SVG" aria-label="Export SVG"></button>
+        <button id="print" class="btn" type="button" title="Print" aria-label="Print"></button>
+        <span class="divider"></span>
+        <button id="diffRef" class="btn" type="button" title="Capture the current render as the diff reference" aria-label="Set diff reference"></button>
+        <button id="diffToggle" class="btn" type="button" title="Toggle a pixel diff against the reference" aria-label="Toggle diff" aria-pressed="false"></button>
+        <span class="divider"></span>
+        <button id="theme" class="btn" type="button" title="Theme" aria-label="Theme"></button>
+      </div>
+    </header>
+
+    <!-- viewport row: thumbnails + rendered page -->
+    <div class="content">
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-tabs">
+          <button id="tabPages" class="seg-btn is-active" type="button" data-tab="pages">Pages</button>
+          <button id="tabOutline" class="seg-btn" type="button" data-tab="outline">Outline</button>
+        </div>
+        <div id="thumbs" class="thumbs tab-pane" data-pane="pages"></div>
+        <div id="outline" class="outline tab-pane" data-pane="outline" hidden></div>
+      </aside>
+      <main id="viewport" class="viewport">
+        <div class="page-wrap"><canvas id="canvas"></canvas></div>
+      </main>
+    </div>
+
+    <!-- bottom dock: source editor + output / stack -->
+    <section class="dock">
+      <div class="panel editor-panel">
+        <div class="panel-head">
+          <span class="panel-title">PostScript</span>
+          <div class="findbar">
+            <input id="find" class="find-input" type="search" placeholder="Find in source…" aria-label="Find in source" />
+            <span id="findCount" class="muted"></span>
+            <button id="findPrev" class="btn btn--sm" type="button" title="Previous match" aria-label="Previous match"></button>
+            <button id="findNext" class="btn btn--sm" type="button" title="Next match" aria-label="Next match"></button>
+          </div>
+          <button id="clear" class="btn btn--sm" type="button" title="Clear source" aria-label="Clear"></button>
+        </div>
+        <textarea id="source" class="editor" spellcheck="false" aria-label="PostScript source">% A little of Riposte's imaging model.
+0.20 0.45 0.90 setrgbcolor
+80 600 moveto 240 600 lineto 240 700 lineto 80 700 lineto closepath fill
+0 1 1 0 setcmykcolor
+440 650 60 0 360 arc fill
+0 0.6 0.3 setrgbcolor 6 setlinewidth 1 setlinecap
+90 360 moveto 200 520 380 200 520 380 curveto stroke
+0 setgray 3 setlinewidth [16 8] 0 setdash
+90 300 moveto 520 300 lineto stroke
+306 150 translate
+0.95 0.75 0.10 setrgbcolor
+newpath 0 80 moveto -47 -65 lineto 76 25 lineto -76 25 lineto 47 -65 lineto closepath eofill
+showpage</textarea>
+        <pre id="printSource" class="print-only" aria-hidden="true"></pre>
+        <div class="samples"><span class="samples-label">Samples</span><span id="samples"></span></div>
+      </div>
+
+      <div class="panel output-panel">
+        <div class="panel-head"><span class="panel-title">Output</span><span id="status" class="status"></span></div>
+        <pre id="output" class="pane" aria-live="polite"></pre>
+        <div class="panel-head"><span class="panel-title">Operand stack <span id="stackCount" class="muted"></span></span></div>
+        <ol id="stack" class="pane stack" reversed></ol>
+      </div>
+    </section>
+
+    <footer class="statusbar">
+      <div class="status-left">
+        <span id="docinfo"></span>
+        <span class="status-sep" id="statSep" hidden></span>
+        <span id="docstats"></span>
+      </div>
+      <button id="toggleDock" class="btn btn--label" type="button" title="Hide the PostScript console" aria-pressed="false">
+        <span class="btn-ico"></span><span>Console</span>
+      </button>
+    </footer>
+  </div>
+
+  <script type="module" src="demo/app.js"></script>
+</body>
+</html>

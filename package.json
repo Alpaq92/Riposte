@@ -1,0 +1,14 @@
+{
+  "name": "riposte",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Pure-JavaScript PostScript reader. No native, no WASM, no runtime dependencies.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test",
+    "serve": "node tools/serve.mjs"
+  },
+  "files": ["engine", "embed", "demo", "assets", "index.html"]
+}

@@ -1,0 +1,106 @@
+
+Sample Tests
+.F.F.F.FF.F.F...F.F....FFF.F....FFF.F..F.F....FFFF..
+--------------------------------------------------
+52 tests, 23 failed
+
+assert-equal
+  should be equal but fail
+    expected: 2
+    actual:   1
+
+assert-not-equal
+  should not be equal but fail
+    expected: 1
+    actual:   1
+
+assert-false
+  should be false but fail
+    expected: false
+    actual:   true
+
+assert-true
+  should be true but fail
+    expected: true
+    actual:   false
+  should not output the item twice (#4)
+    expected: true
+    actual:   false
+
+assert-empty
+  should be empty but fail
+    expected: empty
+    actual:   [0]
+
+assert-not-empty
+  should not be empty but fail
+    expected: not empty
+    actual:   []
+
+assert-string-contains
+  should fail to contain
+    expected: containing '4'
+    actual:   123
+
+assert-not-string-contains
+  should fail to not contain
+    expected: not containing '2'
+    actual:   123
+
+assert-contains
+  should fail to contain
+    expected: containing '4'
+    actual:   [1 2 3]
+  should fail to contain string in mix
+    expected: containing '2'
+    actual:   [2 /2]
+  should fail to contain name in mix
+    expected: containing '/2'
+    actual:   [2 (2)]
+
+assert-not-contains
+  should fail to not contain
+    expected: not containing '2'
+    actual:   [1 2 3]
+
+assert-deep-equal
+  should fail for simple arrays with differing content
+    expected: [1 2 4]
+    actual:   [1 2 3]
+  should fail for deeply nested arrays
+    expected: [1 [[2] 3] [4 [0]] [5]]
+    actual:   [1 [[2] 3] [4 []] [5]]
+  should fail for type mismatch
+    expected: [(1)]
+    actual:   [/1]
+
+assert-deep-not-equal
+  should fail for simple arrays with same content
+    expected: [1 2 3]
+    actual:   [1 2 3]
+
+assert-almost-equal
+  should fail for difference greater than epsilon
+    expected: 1 +/- 1e-05
+    actual:   1 + 0.000100017
+
+assert-not-almost-equal
+  should fail for difference smaller than epsilon
+    expected: not 1 +/- 0.0001
+    actual:   1 + 1.00136e-05
+
+assert-deep-almost-equal
+  should fail for primitives
+    expected: 1.01 +/- 0.005
+    actual:   1.0
+  should fail for simple arrays
+    expected: [1 2 3.01] +/- 0.002
+    actual:   [1 2 3.0]
+
+assert-deep-not-almost-equal
+  should fail for primitives
+    expected: not 1.01 +/- 0.1
+    actual:   1.0
+  should fail for simple arrays
+    expected: not [1 2 3.01] +/- 0.02
+    actual:   [1 2 3.0]

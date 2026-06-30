@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="612" height="792" viewBox="0 0 612 792">
+<path d="M72 144L180 144L180 72L72 72Z" fill="#3373e6"/>
+<path d="M240 144L300 72L360 144" fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="12 6"/>
+<path d="M72 232C120 152 240 312 300 232" fill="none" stroke="#cc1a1a" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M456 108C456 88.118 439.882 72 420 72C400.118 72 384 88.118 384 108C384 127.882 400.118 144 420 144C439.882 144 456 127.882 456 108" fill="#ff0000"/>
+<path d="M240 302L204.73 410.54L297.06 343.46L182.94 343.46L275.27 410.54Z" fill="#f2bf1a" fill-rule="evenodd"/>
+<path d="M440 302L404.73 410.54L497.06 343.46L382.94 343.46L475.27 410.54Z" fill="#4da64d"/>
+<path d="M150 542L230 542" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L227.274 521.294" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L219.282 502" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L206.569 485.431" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L190 472.718" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L170.706 464.726" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L150 462" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L129.294 464.726" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L110 472.718" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L93.431 485.431" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L80.718 502" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L72.726 521.294" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+<path d="M150 542L70 542" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+</svg>

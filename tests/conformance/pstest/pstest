@@ -1,0 +1,57 @@
+#!/bin/bash
+
+quiet=false
+verbose=false
+color=false
+
+while getopts qvch opt ; do
+    case $opt in
+        h|\?)
+            cat <<EOF
+usage:
+  ${0##*/} [-q|-v|-c|-h] [TESTFILENAME ...]
+
+If no TESTFILENAME is given, run all tests in this directory matching
+"*-test.ps".
+
+ -q    quiet: do not show timings at the end
+ -v    verbose: show specs before they are checked
+ -c    color: highlight "PASS" in green, "FAIL" in red
+ -h    help: show this message and exit
+EOF
+            exit 0
+            ;;
+
+        q) quiet=true ;;
+
+        v) verbose=true ;;
+
+        c) color=true ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+tests=${@:-*-test.ps}
+
+command="gs -q -dNOPAUSE -dNODISPLAY -I${0%/*} -dverbose=$verbose $tests quit.ps"
+
+{
+    if $quiet ; then
+        $command
+    else
+        time $command
+    fi
+} | {
+    if $color ; then
+        sed '
+s/PASS/\x1B[1;92mPASS\x1B[0m/g
+s/FAIL/\x1B[1;91mFAIL\x1B[0m/g
+s/---\+/\x1B[90m\0\x1B[0m/g
+s/\d* tests, 0 failed/\x1B[92m\0\x1B[0m/g
+s/[0-9]* tests, [1-9][0-9]* failed/\x1B[91m\0\x1B[0m/g
+'
+    else
+        cat
+    fi
+}

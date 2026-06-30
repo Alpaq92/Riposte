@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="612" height="792" viewBox="0 0 612 792">
+<text transform="matrix(1 0 0 1 72 92)" font-size="24" font-family="sans-serif" fill="#000000">Riposte PostScript smoke test</text>
+<text transform="matrix(1.299 -0.75 0.5 0.866 72 212)" font-size="20" font-family="serif" fill="#1a3399">transformed text</text>
+<path d="M100 692L100 672L120 672L120 692Z" fill="#333333"/>
+<path d="M130 692L130 672L150 672L150 692Z" fill="#333333"/>
+<path d="M160 692L160 672L180 672L180 692Z" fill="#333333"/>
+<path d="M190 692L190 672L210 672L210 692Z" fill="#333333"/>
+<path d="M220 692L220 672L240 672L240 692Z" fill="#333333"/>
+<path d="M250 692L250 672L270 672L270 692Z" fill="#333333"/>
+<path d="M280 692L280 672L300 672L300 692Z" fill="#333333"/>
+<path d="M310 692L310 672L330 672L330 692Z" fill="#333333"/>
+<path d="M340 692L340 672L360 672L360 692Z" fill="#333333"/>
+<path d="M370 692L370 672L390 672L390 692Z" fill="#333333"/>
+<path d="M400 692L400 672L420 672L420 692Z" fill="#333333"/>
+<path d="M430 692L430 672L450 672L450 692Z" fill="#333333"/>
+<path d="M460 692L460 672L480 672L480 692Z" fill="#333333"/>
+</svg>

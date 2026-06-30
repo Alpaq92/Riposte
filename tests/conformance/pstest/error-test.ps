@@ -1,0 +1,19 @@
+(pstest.ps) runlibfile
+
+(Handling Errors) test-case
+
+(When a test checks for an error, the test) should
+  (pass if the error is thrown)
+  { 1 0 div pop }               % supposed to throw an error
+  { pop pop }                   % clean up the unused operands of div
+  assert-error
+
+  (fail if the error is not thrown)
+  { 1 1 div pop }
+  { pop pop }
+  assert-error
+
+  (continue with the next test)
+  true assert-true
+
+test-summary

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="64" height="64" role="img" aria-label="Riposte">
+  <!-- Phosphor "square" (fill) — Primer display indigo-5 -->
+  <path d="M224,48V208a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V48A16,16,0,0,1,48,32H208A16,16,0,0,1,224,48Z" fill="#5a61e7"/>
+  <!-- one mark of Phosphor "quotes" (fill), centred with padding — Primer display indigo-0 -->
+  <g transform="translate(68,16) scale(0.85)">
+    <path d="M116,72v88a48.05,48.05,0,0,1-48,48,8,8,0,0,1,0-16,32,32,0,0,0,32-32v-8H40a16,16,0,0,1-16-16V72A16,16,0,0,1,40,56h60A16,16,0,0,1,116,72Z" fill="#e5e9ff"/>
+  </g>
+</svg>
