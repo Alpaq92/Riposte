@@ -7,7 +7,9 @@
 // encrypted block so the cleartext after it keeps executing.
 import { T, PSObject } from '../object.js';
 import { PSError } from '../errors.js';
-import { parseType1 } from '../font/type1.js';
+import { parseType1Parts } from '../font/type1.js';
+
+const isWS = (c) => c === 0x20 || c === 0x0a || c === 0x0d || c === 0x09 || c === 0x0c;
 
 // The file of the nearest enclosing streaming frame (the program's input).
 function activeFile(vm) {
@@ -46,11 +48,15 @@ export default {
     if (f.type !== T.FILE) throw new PSError('typecheck');
     const sc = f.value && f.value.scanner;
     if (!sc) throw new PSError('ioerror');
-    // The font program is the cleartext header up to the end of the eexec block;
-    // parse just that slice (not the trailing ordinary PostScript after it).
+    // We know the split exactly: the cleartext header is everything before the
+    // `eexec` token, and the encrypted block runs from just after it to the end
+    // of the eexec section. Pass both explicitly so the parser never re-scans the
+    // program for "eexec" (which can appear in a comment or string).
     const end = endOfEexecBlock(sc.b, sc.pos);
+    let p = sc.pos;
+    while (p < sc.b.length && isWS(sc.b[p])) p++;
     let desc = null;
-    try { desc = parseType1(sc.b.subarray(0, end)); } catch { desc = null; }
+    try { desc = parseType1Parts(sc.b.subarray(0, Math.max(0, sc.pos - 5)), sc.b.subarray(p, end)); } catch { desc = null; }
     if (desc && desc.charstrings && desc.charstrings.size) {
       vm.registerFont(desc.fontName || 'EmbeddedFont', desc);
     }

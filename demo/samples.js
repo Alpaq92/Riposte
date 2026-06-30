@@ -28,7 +28,7 @@ ${_hex(encrypt(priv, 55665))}
 0000000000000000000000000000000000000000000000000000000000000000
 cleartomark
 % --- ordinary PostScript that USES the font defined just above ---
-/InlineDemo findfont 280 scalefont setfont
+/InlineDemo findfont 220 scalefont setfont
 0.35 0.30 0.85 setrgbcolor
 90 430 moveto (AAA) show
 0.95 0.75 0.10 setrgbcolor
@@ -118,7 +118,7 @@ showpage`,
     name: 'Embedded font',
     code: `% A built-in synthetic Type 1 font: glyph "A" is a triangle, rendered from
 % charstring OUTLINES (not a system font). Load a real .pfb via the Font button.
-/DemoTriangle findfont 280 scalefont setfont
+/DemoTriangle findfont 220 scalefont setfont
 0.20 0.45 0.90 setrgbcolor
 90 430 moveto (AAA) show
 0.95 0.75 0.10 setrgbcolor

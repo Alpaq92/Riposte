@@ -73,19 +73,26 @@ function parseBinEntries(dec, ds, re, start, end, lenIV, isSubr) {
 export function parseType1(input) {
   let b = coerceBytes(input);
   b = stripPFB(b);
-  const s = latin1(b);
-  const eexecIdx = s.indexOf('eexec');
-  const clearPart = eexecIdx >= 0 ? s.slice(0, eexecIdx) : s;
+  const eexecIdx = latin1(b).indexOf('eexec');
+  if (eexecIdx < 0) return parseType1Parts(b, null);
+  let p = eexecIdx + 5;
+  while (p < b.length && isWS(b[p])) p++;
+  return parseType1Parts(b.subarray(0, eexecIdx), b.subarray(p));
+}
 
+// Parse from an explicit (cleartext header, encrypted eexec block) split. The
+// in-document `eexec` operator calls this with the boundaries it already knows,
+// so we never re-scan the program text for "eexec" — which can occur in a comment
+// or string and fool a substring search.
+export function parseType1Parts(clearBytes, encBytes) {
+  const clearPart = latin1(clearBytes);
   const fontMatrix = parseMatrix(clearPart) || [0.001, 0, 0, 0.001, 0, 0];
   const fontName = (/\/FontName\s*\/([^\s]+)\s+def/.exec(clearPart) || [])[1] || null;
   const encoding = parseEncoding(clearPart);
 
   let charstrings = new Map(), subrs = [];
-  if (eexecIdx >= 0) {
-    let p = eexecIdx + 5;
-    while (p < b.length && isWS(b[p])) p++;
-    let bin = b.subarray(p);
+  if (encBytes && encBytes.length) {
+    let bin = encBytes;
     if (looksHex(bin)) bin = hexDecode(bin);
     const dec = decrypt(bin, 55665, 4);
     const ds = latin1(dec);
@@ -95,6 +102,5 @@ export function parseType1(input) {
     if (subrIdx >= 0) subrs = parseBinEntries(dec, ds, /dup\s+(\d+)\s+(\d+)\s+(?:RD|-\|) /g, subrIdx, csIdx >= 0 ? csIdx : ds.length, lenIV, true);
     if (csIdx >= 0) charstrings = parseBinEntries(dec, ds, /\/([^\s/{}()<>[\]]+)\s+(\d+)\s+(?:RD|-\|) /g, csIdx, ds.length, lenIV, false);
   }
-
   return { type1: true, fontName, fontMatrix, encoding, charstrings, subrs };
 }
