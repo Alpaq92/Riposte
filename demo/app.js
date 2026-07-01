@@ -356,7 +356,7 @@ const ICONS = {
   prevPage: 'caret-left', nextPage: 'caret-right',
   zoomOut: 'magnifying-glass-minus', zoomIn: 'magnifying-glass-plus', zoomFit: 'corners-out',
   findBtn: 'magnifying-glass', svg: 'download-simple', print: 'printer',
-  diffRef: 'checks', diffToggle: 'square-split-horizontal',
+  diffRef: 'frame-corners', diffToggle: 'square-split-horizontal',
   findPrev: 'caret-up', findNext: 'caret-down', clear: 'x',
 };
 for (const [id, name] of Object.entries(ICONS)) setIcon($('#' + id), name);
